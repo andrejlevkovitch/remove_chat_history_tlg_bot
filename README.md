@@ -1,5 +1,10 @@
 # bot for removing messages in telegram chat
 
+## Dependencies
+
+- telethon
+- Python JSON
+
 ## Usage
 
 1. Create json [config](config.json.templete) file with next properties:
