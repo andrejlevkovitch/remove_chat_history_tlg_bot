@@ -1,0 +1,7 @@
+{
+  "api_id": 123456,
+  "api_hash": "00000000000000000000000000000000",
+  "bot_token": "*bot_token*",
+  "bot_session_name": "some secret bot session name",
+  "client_session_name": "some secret client session name"
+}
