@@ -1,0 +1,56 @@
+#!/bin/python3
+
+import sys
+import telethon
+import json
+
+assert len(
+    sys.argv
+) >= 3, """you have to set *.json file with creds as first argument and chat
+title as second"""
+
+cred_filename = sys.argv[1]
+chat_name = sys.argv[2]
+
+cred_file = open(cred_filename, "r")
+cred_obj = json.load(cred_file)
+cred_file.close()
+
+client_session_name = cred_obj["client_session_name"]
+api_id = cred_obj["api_id"]
+api_hash = cred_obj["api_hash"]
+
+client = telethon.TelegramClient(client_session_name, api_id, api_hash)
+
+
+async def remove_chat_history(chat_id: str) -> None:
+  # check connection
+  await client.connect()
+
+  # get list message ids for removing
+  list_for_remove = []
+  async for message in client.iter_messages(chat_id):
+    list_for_remove.append(message.id)
+
+  # remove messages at once
+  await client.delete_messages(entity=chat_id, message_ids=list_for_remove)
+
+
+async def main():
+  # get connection
+  await client.connect()
+
+  founded = None
+  async for dialog in client.iter_dialogs():
+    if dialog.title == chat_name:
+      founded = dialog
+
+  assert founded != None, "chat not found"
+
+  await remove_chat_history(founded.id)
+  await client.send_message(entity=founded.id, message="done")
+
+  print("done")
+
+
+client.loop.run_until_complete(main())
