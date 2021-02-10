@@ -1,0 +1,7 @@
+# crontab
+
+SHELL=/bin/bash
+
+# start at midnight
+0 0 * * * . /root/project_env.sh; cd /creds; clear_chat /creds/creds.json $CHAT_NAME &>> /var/log/periodic_chat_clear.log
+# Don't remove the empty line at the end of this file. It is required to run the cron job

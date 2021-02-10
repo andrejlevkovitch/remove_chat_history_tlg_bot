@@ -1,0 +1,23 @@
+version: "3.3"
+services:
+  cron:
+    build: "./"
+    volumes:
+      - "./cron.d:/etc/cron.d"
+      - "../../scripts/clear_chat:/bin/clear_chat"
+      - "../../scripts/check_user_authorization:/bin/check_user_authorization"
+      - "./creds:/creds"
+    environment:
+      - "CHAT_NAME=${CHAT_NAME}"
+    command:
+      - /bin/bash
+      - -c
+      - |
+        echo "chat for clearing: $CHAT_NAME"
+        cd /creds
+        check_user_authorization creds.json
+        printenv | sed 's/^\(.*\)$$/export \1/g' > /root/project_env.sh
+        touch /var/log/periodic_chat_clear.log
+        cron
+        crontab /etc/cron.d/periodic_chat_clear
+        tail -f /var/log/periodic_chat_clear.log

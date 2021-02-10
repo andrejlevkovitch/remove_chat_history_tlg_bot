@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/python3
 
 import sys
 import telethon
@@ -89,10 +89,16 @@ async def clear(event: telethon.events.NewMessage.Event):
     raise
 
 
+async def check_user_athorization(user_client):
+  await user_client.connect()
+  assert await user_client.is_user_authorized(), """
+This script need authorized session file, so start another script:
+auth_session - for create authorized session
+"""
+
+
 def main():
-  # need for authorizate session
-  with client:
-    client.loop.run_until_complete(client.connect())
+  client.loop.run_until_complete(check_user_athorization(client))
 
   # run the bot
   bot.run_until_disconnected()

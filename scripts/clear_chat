@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/python3
 
 import sys
 import telethon
@@ -36,9 +36,17 @@ async def remove_chat_history(chat_id: str) -> None:
   await client.delete_messages(entity=chat_id, message_ids=list_for_remove)
 
 
+async def check_user_athorization(user_client):
+  await user_client.connect()
+  assert await user_client.is_user_authorized(), """
+This script need authorized session file, so start another script:
+auth_session - for create authorized session
+"""
+
+
 async def main():
-  # get connection
   await client.connect()
+  await check_user_athorization(client)
 
   founded = None
   async for dialog in client.iter_dialogs():

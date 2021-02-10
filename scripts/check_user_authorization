@@ -1,0 +1,39 @@
+#!/usr/bin/python3
+
+import sys
+import telethon
+import json
+
+assert len(sys.argv
+          ) >= 2, """you have to set *.json file with creds as first argument"""
+
+cred_filename = sys.argv[1]
+
+cred_file = open(cred_filename, "r")
+cred_obj = json.load(cred_file)
+cred_file.close()
+
+client_session_name = cred_obj["client_session_name"]
+api_id = cred_obj["api_id"]
+api_hash = cred_obj["api_hash"]
+
+client = telethon.TelegramClient(client_session_name, api_id, api_hash)
+
+
+async def check_user_athorization(user_client):
+  await user_client.connect()
+  assert await user_client.is_user_authorized(), """
+This script need authorized session file, so start another script:
+auth_session - for create authorized session
+"""
+
+
+async def main():
+  await client.connect()
+
+  assert await client.is_user_authorized(), "user not authorized"
+
+  print("user authorized")
+
+
+client.loop.run_until_complete(main())
