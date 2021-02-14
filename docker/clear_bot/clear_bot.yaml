@@ -1,6 +1,6 @@
 version: "3.3"
 services:
-  cron:
+  bot:
     build: "./"
     volumes:
       - "../../scripts/clear_bot:/bin/clear_bot"
