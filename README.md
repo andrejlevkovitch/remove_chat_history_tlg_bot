@@ -12,14 +12,26 @@
 For using this scripts you need user permissions, so you have to authorize
 user session. For it you need:
 
-1. Create json creds file (see [template](creds.json.templete)) file with next properties:
+1. Create json creds file (see [template](creds/creds.json.template)) file with next properties:
   - `api_id` - get from [development](https://my.telegram.org)
   - `api_hash` - get with previous values
   - `client_session_name` - just a string, set it as you want
   - `bot_tokne` - need for bot usage, see below
   - `bot_session_name` - also need ofr bot usage
 
+__NOTE__ if you want to use docker services from the repository, then you have to
+set name of the file as `creds.json`
+
 2. And authorize this session by [auth_session script](scripts/auth_session)
+
+```
+cd creds
+../scripts/auth_session creds.json
+```
+
+__NOTE__ if you want to use docker services from the repository, then you have to
+run [authentication script](scripts/auth_session) directly from [creds folder](creds)
+or copy session files in it folder.
 
 
 ## Bot Usage

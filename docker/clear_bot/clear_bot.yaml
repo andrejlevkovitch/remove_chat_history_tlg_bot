@@ -5,12 +5,6 @@ services:
     volumes:
       - "../../scripts/clear_bot:/bin/clear_bot"
       - "../../scripts/check_user_authorization:/bin/check_user_authorization"
-      - "./creds:/creds"
-    command:
-      - /bin/bash
-      - -c
-      - |
-        cd /creds
-        check_user_authorization /creds/creds.json
-        touch /var/log/clear_bot.log
-        clear_bot /creds/creds.json &>> /var/log/clear_bot.log
+      - "../../creds:/creds"
+      - "./entrypoint.sh:/entrypoint.sh"
+    command: ["/bin/bash", "/entrypoint.sh", "/creds/creds.json"]
